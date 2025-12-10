@@ -5,6 +5,7 @@ so nothing in this file really has anything to do with GPT specifically.
 
 import time
 from collections import defaultdict
+from typing import Callable, Any
 
 import torch
 from torch.utils.data.dataloader import DataLoader
@@ -28,7 +29,7 @@ class Trainer:
         C.grad_norm_clip = 1.0
         return C
 
-    def __init__(self, config, model, train_dataset):
+    def __init__(self, config: CN, model: torch.nn.Module, train_dataset: Any):
         self.config = config
         self.model = model
         self.optimizer = None
@@ -48,10 +49,10 @@ class Trainer:
         self.iter_time = 0.0
         self.iter_dt = 0.0
 
-    def add_callback(self, onevent: str, callback):
+    def add_callback(self, onevent: str, callback: Callable):
         self.callbacks[onevent].append(callback)
 
-    def set_callback(self, onevent: str, callback):
+    def set_callback(self, onevent: str, callback: Callable):
         self.callbacks[onevent] = [callback]
 
     def trigger_callbacks(self, onevent: str):
